@@ -37,24 +37,30 @@ class TestCalc:
 
     # 加法测试方法
     @pytest.mark.add
+    @pytest.mark.run(order=1)
     @pytest.mark.parametrize('a, b, result', add_datas, ids=add_ids)
     def check_add(self, a, b, result):
         assert result == self.cal.add(a, b)
 
     # 减法测试方法
     @pytest.mark.dec
+    @pytest.mark.run(order=2)
+    @pytest.mark.dependency(depends=['check_add'])
     @pytest.mark.parametrize('a, b, result', dec_datas, ids=dec_ids)
     def check_dec(self, a, b, result):
         assert result == self.cal.dec(a, b)
 
     # 乘法测试方法
     @pytest.mark.mcl
+    @pytest.mark.run(order=3)
     @pytest.mark.parametrize('a, b, result', mcl_datas, ids=mcl_ids)
     def check_mcl(self, a, b, result):
         assert result == self.cal.mcl(a, b)
 
     # 除法测试方法
     @pytest.mark.div
+    @pytest.mark.run(order=4)
+    @pytest.mark.dependency(depends=['check_mcl'])
     @pytest.mark.parametrize('a, b, result', div_datas, ids=div_ids)
     def check_div(self, a, b, result):
         assert result == self.cal.div(a, b)
